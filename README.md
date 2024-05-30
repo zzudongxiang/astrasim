@@ -12,35 +12,35 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
 
 - 使用apt安装系统依赖组件
 
-```bash
-# 更新apt源
-apt update
-apt upgrade
-# 使用apt安装依赖
-apt install -y gcc g++ make cmake mpich
-apt install -y nano git git-lfs python3 python3-pip
-apt install -y libboost-dev libboost-program-options-dev
-apt install -y libprotobuf-dev protobuf-compiler
-```
+  ```bash
+  # 更新apt源
+  apt update
+  apt upgrade
+  # 使用apt安装依赖
+  apt install -y gcc g++ make cmake mpich
+  apt install -y nano git git-lfs python3 python3-pip
+  apt install -y libboost-dev libboost-program-options-dev
+  apt install -y libprotobuf-dev protobuf-compiler
+  ```
 
 - 安装conda环境**（可选）**
 
-```bash
-# 创建conda环境
-conda create -n astra-sim python=3.7 -y
-# 激活conda环境
-conda activate astra-sim
-```
+  ```bash
+  # 创建conda环境
+  conda create -n astra-sim python=3.7 -y
+  # 激活conda环境
+  conda activate astra-sim
+  ```
 
 - 安装python依赖
 
-```bash
-# 更新pip工具
-pip install --upgrade pip
-# 安装python组件
-pip install protobuf==3.6.1 pydot -i https://pypi.tuna.tsinghua.edu.cn/simple
-pip install pandas matplotlib seaborn -i https://pypi.tuna.tsinghua.edu.cn/simple
-```
+  ```bash
+  # 更新pip工具
+  pip install --upgrade pip
+  # 安装python组件
+  pip install protobuf==3.6.1 pydot -i https://pypi.tuna.tsinghua.edu.cn/simple
+  pip install pandas matplotlib seaborn -i https://pypi.tuna.tsinghua.edu.cn/simple
+  ```
 
 ### 1.2 编译源码
 
@@ -81,62 +81,62 @@ pip install pandas matplotlib seaborn -i https://pypi.tuna.tsinghua.edu.cn/simpl
 
 - 下载Tutorials源码
 
-```bash
-# clone tutorials仓库
-git clone https://github.com/astra-sim/tutorials.git
-```
+  ```bash
+  # clone tutorials仓库
+  git clone https://github.com/astra-sim/tutorials.git
+  ```
 
 - 执行clone命令**（需要提前在github上配置ssh密钥）**
 
-```bash
-# 切换到asplos2023文件夹
-cd tutorials/asplos2023
-# 执行clone命令
-bash ./clone_astra_sim.sh
-```
+  ```bash
+  # 切换到asplos2023文件夹
+  cd tutorials/asplos2023
+  # 执行clone命令
+  bash ./clone_astra_sim.sh
+  ```
 
 - 编译工程
 
-```bash
-# 使用Analytical Network作为后端编译
-bash ./build_analytical.sh
-# 使用阻塞的Analytical作为后端编译
-bash ./build_congestion.sh
-```
+  ```bash
+  # 使用Analytical Network作为后端编译
+  bash ./build_analytical.sh
+  # 使用阻塞的Analytical作为后端编译
+  bash ./build_congestion.sh
+  ```
 
 - 验证结果
 
-```bash
-# 运行case 1-1
-bash ./exercise_1/exercise_1-1.sh
-```
+  ```bash
+  # 运行case 1-1
+  bash ./exercise_1/exercise_1-1.sh
+  ```
 
 #### C. 通过ASTRA-sim
 
 - 下载源码**（需要提前在github上配置ssh密钥）**
 
-```bash
-# clone源码仓库以及其相关的依赖仓库
-git clone --recurse-submodules git@github.com:astra-sim/astra-sim.git
-```
+  ```bash
+  # clone源码仓库以及其相关的依赖仓库
+  git clone --recurse-submodules git@github.com:astra-sim/astra-sim.git
+  ```
 
 - 编译源码
 
-```bash
-# 切换到源码仓库的文件夹
-cd astra-sim
-# 使用Analytical Network作为后端编译
-bash ./build/astra_analytical/build.sh
-# 使用NS3 Network Backend作为后端编译
-bash ./build/astra_ns3/build.sh -c
-```
+  ```bash
+  # 切换到源码仓库的文件夹
+  cd astra-sim
+  # 使用Analytical Network作为后端编译
+  bash ./build/astra_analytical/build.sh
+  # 使用NS3 Network Backend作为后端编译
+  bash ./build/astra_ns3/build.sh -c
+  ```
 
 - ASTRA-sim 生成后，可执行文件 `${BINARY}` 位于：
 
-```bash
-# 当使用Analytical Network作为后端编译时
-${ASTRA_SIM}/build/astra_analytical/build/AnalyticalAstra/bin/AnalyticalAstra
-```
+  ```bash
+  # 当使用Analytical Network作为后端编译时
+  ${ASTRA_SIM}/build/astra_analytical/build/AnalyticalAstra/bin/AnalyticalAstra
+  ```
 
 ## 2. 仿真验证
 
