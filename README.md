@@ -2,7 +2,9 @@
 
 ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研究现代深度学习系统所面临的挑战，探索瓶颈问题，并为未来不同平台上开发大型 DNN 模型提供高效的方法。
 
-![alt text](./images/astra_sim_overview.png)
+<div align="center">
+    <img src="./images/astra_sim_overview.png"/>
+</div>
 
 ## 1. 安装过程
 
@@ -10,107 +12,135 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
 
 - 使用apt安装系统依赖组件
 
-```bash
-# 更新apt源
-apt update
-# 使用apt安装依赖
-apt install -y gcc g++ make cmake libboost-dev libboost-program-options-dev libprotobuf-dev protobuf-compiler python3 python3-pip git git-lfs nano
-```
+  ```bash
+  # 更新apt源
+  apt update
+  apt upgrade
+  # 使用apt安装依赖
+  apt install -y gcc g++ make cmake mpich
+  apt install -y nano git git-lfs python3 python3-pip
+  apt install -y libboost-dev libboost-program-options-dev
+  apt install -y libprotobuf-dev protobuf-compiler
+  ```
 
-- 安装conda环境（可选）
+- 安装conda环境**（可选）**
 
-```bash
-# 创建conda环境
-conda create -n astra-sim python=3.7 -y
-# 激活conda环境
-conda activate astra-sim
-```
+  ```bash
+  # 创建conda环境
+  conda create -n astra-sim python=3.7 -y
+  # 激活conda环境
+  conda activate astra-sim
+  ```
 
 - 安装python依赖
 
-```bash
-# 更新pip工具
-pip install --upgrade pip
-# 安装python组件
-pip install protobuf==3.6.1 pydot pandas matplotlib seaborn
-```
+  ```bash
+  # 更新pip工具
+  pip install --upgrade pip
+  # 安装python组件
+  pip install protobuf==3.6.1 pydot -i https://pypi.tuna.tsinghua.edu.cn/simple
+  pip install pandas matplotlib seaborn -i https://pypi.tuna.tsinghua.edu.cn/simple
+  ```
 
 ### 1.2 编译源码
 
-> **不建议使用较新的Ubuntu系统版本，请注意检查gcc的版本，如果超过gcc-11，后续的工作可能会遇到编译错误！！！**
+> [!CAUTION]
+>
+> - 不建议使用较新的Ubuntu系统版本，请使用`gcc -v`检查gcc版本，如果超过gcc-11，后续的工作可能会遇到编译错误！！！
+> - 请勿使用root用户编译ASTRA-sim项目，可能会导致ns-3模块编译失败！！！
+> - 如果当前正在以root用户登录，请参考`编译失败`章节中的添加普通用户处理过程
 
-#### A. 通过Tutorials（推荐）
+#### A. 通过本仓库（推荐）
+
+- 下载仓库
+
+  ```bash
+  # 使用git clone遍历所有子仓库
+  git clone --recursive <git_repo_address>
+  ```
+
+- 如果clone过程中出现网络问题导致遍历clone未完成，可使用如下命令更新子模块
+
+  ```bash
+  # 更新子模块
+  git submodule update --init --recursive
+  ```
+
+- 编译项目
+
+  ```bash
+  # 切换到源码仓库的文件夹
+  cd astra-sim
+  # 使用Analytical Network作为后端编译
+  bash ./build/astra_analytical/build.sh
+  # 使用NS3 Network Backend作为后端编译
+  bash ./build/astra_ns3/build.sh -c
+  ```
+
+#### B. 通过Tutorials
 
 - 下载Tutorials源码
 
-```bash
-# clone tutorials仓库
-git clone https://github.com/astra-sim/tutorials.git
-```
+  ```bash
+  # clone tutorials仓库
+  git clone https://github.com/astra-sim/tutorials.git
+  ```
 
-- 执行clone命令（需要提前在github上配置好ssh密钥）
+- 执行clone命令**（需要提前在github上配置ssh密钥）**
 
-```bash
-# 切换到asplos2023文件夹
-cd tutorials/asplos2023
-# 执行clone命令
-bash ./clone_astra_sim.sh
-```
+  ```bash
+  # 切换到asplos2023文件夹
+  cd tutorials/asplos2023
+  # 执行clone命令
+  bash ./clone_astra_sim.sh
+  ```
 
 - 编译工程
 
-```bash
-# 使用Analytical Network作为后端编译
-bash ./build_analytical.sh
-# 使用阻塞的Analytical作为后端编译
-bash ./build_congestion.sh
-```
+  ```bash
+  # 使用Analytical Network作为后端编译
+  bash ./build_analytical.sh
+  # 使用阻塞的Analytical作为后端编译
+  bash ./build_congestion.sh
+  ```
 
 - 验证结果
 
-```bash
-# 运行case 1-1
-bash ./exercise_1/exercise_1-1.sh
-```
+  ```bash
+  # 运行case 1-1
+  bash ./exercise_1/exercise_1-1.sh
+  ```
 
-#### B. 通过ASTRA-sim
+#### C. 通过ASTRA-sim
 
-- 下载源码（需要提前在github上配置好ssh密钥）
+- 下载源码**（需要提前在github上配置ssh密钥）**
 
-```bash
-# clone源码仓库以及其相关的依赖仓库
-git clone --recurse-submodules git@github.com:astra-sim/astra-sim.git
-```
+  ```bash
+  # clone源码仓库以及其相关的依赖仓库
+  git clone --recurse-submodules git@github.com:astra-sim/astra-sim.git
+  ```
 
 - 编译源码
 
-```bash
-# 切换到源码仓库的文件夹
-cd astra-sim
-# 使用Analytical Network作为后端编译
-bash ./build/astra_analytical/build.sh
-# 使用NS3 Network Backend作为后端编译
-bash ./build/astra_ns3/build.sh -c
-```
-
-### 1.3 运行ASTRA-sim
+  ```bash
+  # 切换到源码仓库的文件夹
+  cd astra-sim
+  # 使用Analytical Network作为后端编译
+  bash ./build/astra_analytical/build.sh
+  # 使用NS3 Network Backend作为后端编译
+  bash ./build/astra_ns3/build.sh -c
+  ```
 
 - ASTRA-sim 生成后，可执行文件 `${BINARY}` 位于：
 
-```bash
-# 当使用Analytical Network作为后端编译时
-${ASTRA_SIM}/build/astra_analytical/build/AnalyticalAstra/bin/AnalyticalAstra
-```
+  ```bash
+  # 当使用Analytical Network作为后端编译时
+  ${ASTRA_SIM}/build/astra_analytical/build/AnalyticalAstra/bin/AnalyticalAstra
+  ```
 
-- 通过传递所需的参数来运行模拟：
+## 2. 仿真验证
 
-```bash
-${BINARY} \
-  --workload-configuration=${WORKLOAD_CONFIG} \
-  --system-configuration=${SYSTEM_CONFIG} \
-  --network-configuration=${NETWORK_CONFIG} \
-  --remote-memory-configuration=${REMOTE_MEMORY_CONFIG}
-```
+==TODO==
 
 ## 常见问题处理
 
@@ -128,6 +158,21 @@ ${BINARY} \
 
   ![image-20240529192630456](./images/image-20240529192630456.png)
 
+- **extern/…/et_def.pb.h:17:2: error: #error This file was generated by an older…**
+
+  一般是protoc工具的版本问题，如果使用的是Anaconda环境，需要检查环境是否正确，如果不正确的话，请使用`conda avtivate astra-sim`激活已经配置好的Anaconda环境
+  
+- **Exception: Refusing to run as root. --enable-sudo will request your password when needed**
+
+  一般是因为使用了root用户进行编译操作导致的，请勿使用root用户登录并编译该文件，请切换为普通用户后尝试
+
+  - 可以使用`adduser astrasim`创建普通用户
+  - 然后使用`su astrasim`切换到普通用户后执行
+
+  使用普通用户编译完成后记得需要使用`cp -r <src_path> <dst_path>`命令复制编译后的产物到指定路径，然后使用`chown -R root <dst_path>`修改文件夹的权限
+
+### 运行失败
+
 - **AnalyticalAstra: /…libstdc++.so.6: version `GLIBCXX_3.4.32' not found…**
 
   使用`strings xxx/anaconda3/lib/libstdc++.so.6 | grep GLIBCXX`发现输出的GLIBC版本中缺少指定的3.4.32版本的标记，通过`find /usr -name libstdc++.so.6`搜索其他`libstdc++.so.6`文件所在的位置，并使用如下命令将其导入动态链接库环境变量中即可
@@ -136,14 +181,4 @@ ${BINARY} \
   # 如有必要，可以将以下内容添加至~/.bashrc文件中
   export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
   ```
-
-- **extern/…/et_def.pb.h:17:2: error: #error This file was generated by an older…**
-
-  如果使用的是Anaconda环境，需要检查环境是否正确，如果不正确的话，请使用`conda avtivate astra-sim`激活已经配置好的Anaconda环境
-
-  
-
-  
-
-  
 
