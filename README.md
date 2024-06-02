@@ -52,11 +52,11 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
 
 #### A. 通过本仓库（推荐）
 
-- 下载仓库
+- 下载astra-sim仓库
 
   ```bash
-  # 使用git clone遍历所有子仓库
-  git clone --recursive <git_repo_address>
+  # 使用脚本拉取asplos2023版本的代码
+  bash ./clone_astra_sim.sh
   ```
 
 - 如果clone过程中出现网络问题导致遍历clone未完成，可使用如下命令更新子模块
@@ -69,46 +69,10 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
 - 编译项目
 
   ```bash
-  # 切换到源码仓库的文件夹
-  cd astra-sim
-  # 使用Analytical Network作为后端编译
-  bash ./build/astra_analytical/build.sh
-  # 使用NS3 Network Backend作为后端编译
-  bash ./build/astra_ns3/build.sh -c
-  ```
-
-#### B. 通过Tutorials
-
-- 下载Tutorials源码
-
-  ```bash
-  # clone tutorials仓库
-  git clone https://github.com/astra-sim/tutorials.git
-  ```
-
-- 执行clone命令**（需要提前在github上配置ssh密钥）**
-
-  ```bash
-  # 切换到asplos2023文件夹
-  cd tutorials/asplos2023
-  # 执行clone命令
-  bash ./clone_astra_sim.sh
-  ```
-
-- 编译工程
-
-  ```bash
   # 使用Analytical Network作为后端编译
   bash ./build_analytical.sh
   # 使用阻塞的Analytical作为后端编译
   bash ./build_congestion.sh
-  ```
-
-- 验证结果
-
-  ```bash
-  # 运行case 1-1
-  bash ./exercise_1/exercise_1-1.sh
   ```
 
 #### C. 通过ASTRA-sim
@@ -140,7 +104,97 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
 
 ## 2. 仿真验证
 
-==TODO==
+### 2.1 设置仿真参数
+
+在使用ASTRA-sim进行仿真之前需要对网络的以及算法相关的参数进行定义。
+
+#### A. 网络参数
+
+- https://astra-sim.github.io/astra-network-analytical-docs/input-format/input-format.html
+
+```json
+{
+  "dimensions-count": 1,
+  "topologies-per-dim": ["FullyConnected"],
+  "units-count": [8],
+  "links-count": [7],
+  "link-latency": [22000],
+  "link-bandwidth": [19]
+}
+```
+
+- **dimensions-count** 维度是数量，这里以8个Ascend组成的全连接网络为例，维度为1
+- **topologies-per-dim** 每个维度的拓扑结构，可选：`FullyConnected`、`Ring`、`Swicth`等
+- **units-count** 每个维度待组网的节点数量
+- **links-count** 每个节点的链接数量
+- **link-latency** 链接的延迟，单位ns
+- **link-bandwidth** 链接的单向带宽，单位GB/s
+
+#### B. 系统参数
+
+```yml
+scheduling-policy: LIFO
+endpoint-delay: 10
+active-chunks-per-dimension: 1
+preferred-dataset-splits: 8
+boost-mode: 1
+all-reduce-implementation: direct
+all-gather-implementation: direct
+reduce-scatter-implementation: direct
+all-to-all-implementation: direct
+collective-optimization: localBWAware
+```
+
+- **scheduling-policy** 调度策略
+- **endpoint-delay** 每个节点的延迟，单位ns
+- **active-chunks-per-dimension** 每个维度激活的块
+- **preferred-dataset-splits** 数据集对象拆分的块数量
+- **boost-mode** 当使用对称网络时进行快速仿真
+- **all-reduce-implementation** AllReduce的实现方法，例如：`direct`、`halvingDoubling`等
+- **collective-optimization** 集合通信优化策略
+
+#### C. 负载参数
+
+```txt
+MICRO
+1
+allreduce -1 1 NONE 0 1 NONE 0 1 ALLREDUCE 2147483648 1
+```
+
+- **Line 1：MICRO** 训练的loop
+- **Line 2：1** 层号
+- **Line 3：allreduce** `<元数据>` 层的名字
+- **Line 3：-1** `<元数据> ` 保留参数
+- **Line 3：1** `<前向传播>` 计算时间，单位us
+- **Line 3：NONE** `<前向传播>` 通信类型
+- **Line 3：0** `<前向传播>`通信数据量大小，单位Byte
+- **Line 3：1** `<输入梯度>` 计算时间，单位us
+- **Line 3：None** `<输入梯度>` 通信类型
+- **Line 3：0** `<输入梯度>` 通信数据量大小，单位Byte
+- **Line 3：1** `<权重梯度>` 计算时间，单位us
+- **Line 3：ALLREDUCE** `<权重梯度>` 通信类型
+- **Line 3：2147483648** `<权重梯度>` 通信数据量大小，单位Byte
+- **Line 3：1** `网络层` 延迟
+
+### 2.2 仿真结果
+
+根据测试数据，修改仿真参数如下：
+
+- 链接延迟为22us
+- 单向带宽为19GB/s
+- AllReduce通信量为2GB
+
+| TotalTime(us) | ExposedCommunicationTime(us) | TotalMessageSize(MB) |
+| :-----------: | :--------------------------: | :------------------: |
+|   26669.625   |          26669.625           |       3584.00        |
+
+### 2.3 实际测试结果
+
+- 数据参考：https://gitee.com/zzudongxiang/ascend.cl/tree/master/data/trace_log/prof
+
+- 实测数据显示：
+  - 每个Epoch耗时29.871ms，仿真结果为26.670ms，相差3.201ms（11%）
+  - 每个Epoch通过HCCL传输数据3584MB与仿真结果一致
 
 ## 常见问题处理
 
