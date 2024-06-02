@@ -1,0 +1,8 @@
+{
+  "dimensions-count": 1,
+  "topologies-per-dim": ["FullyConnected"],
+  "units-count": [8],
+  "links-count": [7],
+  "link-latency": [22000],
+  "link-bandwidth": [19]
+}
