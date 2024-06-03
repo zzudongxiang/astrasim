@@ -111,6 +111,7 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
 #### A. 网络参数
 
 - https://astra-sim.github.io/astra-network-analytical-docs/input-format/input-format.html
+- https://astra-sim.github.io/astra-sim-docs/getting-started/argument-network-config.html
 
 ```json
 {
@@ -132,6 +133,8 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
 
 #### B. 系统参数
 
+- https://astra-sim.github.io/astra-sim-docs/getting-started/argument-system-config.html
+
 ```yml
 scheduling-policy: LIFO
 endpoint-delay: 10
@@ -150,10 +153,17 @@ collective-optimization: localBWAware
 - **active-chunks-per-dimension** 每个维度激活的块
 - **preferred-dataset-splits** 数据集对象拆分的块数量
 - **boost-mode** 当使用对称网络时进行快速仿真
-- **all-reduce-implementation** AllReduce的实现方法，例如：`direct`、`halvingDoubling`等
+- **all-reduce-implementation** AllReduce的实现方法，例如：`ring`、`direct`、`doubleBinaryTree`、`oneRing`、`oneDirect`.等
 - **collective-optimization** 集合通信优化策略
 
 #### C. 负载参数
+
+- **注意版本，以下链接仅适用于最新版本的workload参数生成**
+  - https://astra-sim.github.io/astra-sim-docs/getting-started/argument-workload-config.html
+
+- **以下Youtube视频适用于本仓库的workload参数设置**
+  - https://youtu.be/AVtqhMV1UOU?si=AJBpo-q7Ve8K411I
+
 
 ```txt
 MICRO
