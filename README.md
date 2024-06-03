@@ -193,6 +193,7 @@ allreduce -1 1 NONE 0 1 NONE 0 1 ALLREDUCE 2147483648 1
 - 链接延迟为22us
 - 单向带宽为19GB/s
 - AllReduce通信量为2GB
+- 集合通信算法选择direct
 
 | TotalTime(us) | ExposedCommunicationTime(us) | TotalMessageSize(MB) |
 | :-----------: | :--------------------------: | :------------------: |
@@ -205,6 +206,18 @@ allreduce -1 1 NONE 0 1 NONE 0 1 ALLREDUCE 2147483648 1
 - 实测数据显示：
   - 每个Epoch耗时29.871ms，仿真结果为26.670ms，相差3.201ms（11%）
   - 每个Epoch通过HCCL传输数据3584MB与仿真结果一致
+
+### 2.4 其他通信算法的仿真时间对比
+
+- 只改变通信算法不改变其他参数的情况下
+
+|     通信算法     | 通信时间 (ms) |
+| :--------------: | :-----------: |
+|      direct      |    26.670     |
+|    oneDirect     |    26.670     |
+|       ring       |    186.686    |
+|     oneRing      |    186.686    |
+| doubleBinaryTree |    632.699    |
 
 ## 常见问题处理
 
