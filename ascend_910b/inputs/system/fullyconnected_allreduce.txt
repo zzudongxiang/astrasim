@@ -3,7 +3,7 @@ intra-dimension-scheduling: SCF
 endpoint-delay: 1
 active-chunks-per-dimension: 8
 preferred-dataset-splits: 8
-boost-mode: 1
+boost-mode: 0
 all-reduce-implementation: direct
 all-gather-implementation: direct
 reduce-scatter-implementation: direct

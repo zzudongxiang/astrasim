@@ -1,0 +1,3 @@
+MICRO
+1
+reducescatter -1    1 NONE 0    1 NONE 0    1 REDUCESCATTER 1   1
