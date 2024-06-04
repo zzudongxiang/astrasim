@@ -3,6 +3,6 @@
   "topologies-per-dim": ["FullyConnected"],
   "units-count": [8],
   "links-count": [7],
-  "link-latency": [116890],
-  "link-bandwidth": [2.68]
+  "link-latency": [116886],
+  "link-bandwidth": [13.812]
 }
