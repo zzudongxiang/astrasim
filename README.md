@@ -75,7 +75,7 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
   bash ./build_congestion.sh
   ```
 
-#### C. 通过ASTRA-sim
+#### B. 通过ASTRA-sim
 
 - 下载源码**（需要提前在github上配置ssh密钥）**
 
