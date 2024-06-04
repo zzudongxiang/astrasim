@@ -1,0 +1,3 @@
+MICRO
+1
+allgather -1    1 NONE 0    1 NONE 0    1 ALLGATHER 1   1

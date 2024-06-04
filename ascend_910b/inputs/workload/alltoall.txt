@@ -1,0 +1,3 @@
+MICRO
+1
+alltoall -1    1 NONE 0    1 NONE 0    1 ALLTOALL 1   1

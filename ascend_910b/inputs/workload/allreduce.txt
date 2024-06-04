@@ -1,0 +1,3 @@
+MICRO
+1
+allreduce -1    1 NONE 0    1 NONE 0    1 ALLREDUCE 1   1
