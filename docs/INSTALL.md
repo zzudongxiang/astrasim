@@ -62,15 +62,27 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
 - 更新本仓库所依赖的子模块内容
 
   ```bash
-  # 更新子模块
   git submodule update --init --recursive
   ```
-
-- 使用预定义的脚本编译项目
+  
+- 使用预定义的脚本编译和验证项目
 
   ```bash
-  # 编译使用NS3作为后端的ASTRA-sim项目
-  bash ./script/build_ns3.sh
+  # 编译并验证Analytical网络后端
+  bash ./script/build_analytical.sh -a
+  # 编译并验证NS3网络后端
+  bash ./script/build_ns3.sh -a
+  ```
+  
+- 在编译的时候可以使用如下命令分别进行编译和验证 **（可选）**
+
+  ```bash
+  # 清理历史编译的缓存文件
+  bash ./script/<build_script> -l
+  # 仅编译，如果存在缓存则使用缓存进行编译，编译后不进行测试
+  bash ./script/<build_script> -c
+  # 验证编译结果，运行验证脚本
+  bash ./script/<build_script> -v
   ```
 
 ## 3. 常见问题
