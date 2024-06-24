@@ -1,0 +1,46 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "chakra.et_converter",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/astra-sim/extern/graph_frontend/chakra/et_converter/et_converter.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--input_type",
+                "Text",
+                "--input_filename",
+                "./astra-sim/inputs/workload/ASTRA-sim-1.0/DLRM_HybridParallel.txt",
+                "--output_filename",
+                "./astra-sim/inputs/workload/ASTRA-sim-2.0/DLRM_HybridParallel",
+                "--num_npus",
+                "64",
+                "--num_dims",
+                "1",
+                "--num_passes",
+                "1"
+            ]
+        },
+        {
+            "name": "astra-sim_ns3",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/ns3-dev-AstraSimNetwork-default",
+            "args": [
+                "--workload-configuration=\"${workspaceFolder}/example/demo/workload/Resnet50_DataParallel\"",
+                "--system-configuration=\"${workspaceFolder}/astra-sim/inputs/system/Switch.json\"",
+                "--network-configuration=\"${workspaceFolder}/astra-sim/extern/network_backend/ns-3/scratch/config/config.txt\"",
+                "--logical-topology-configuration=\"${workspaceFolder}/astra-sim/inputs/network/ns3/sample_8nodes_1D.json\"",
+                "--remote-memory-configuration=\"${workspaceFolder}/astra-sim/inputs/remote_memory/analytical/no_memory_expansion.json\"",
+                "--comm-group-configuration=\"empty\"",
+            ],
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            "preLaunchTask": "build_astrasim_ns3",
+        },
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "build_astrasim_ns3",
+            "command": "bash ${workspaceFolder}/script/build_ns3.sh -c",
+        },
+    ],
+    "version": "2.0.0"
+}
