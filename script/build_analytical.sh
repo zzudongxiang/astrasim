@@ -3,18 +3,17 @@ set -e
 
 SCRIPT_DIR=$(dirname "$(realpath $0)")
 ROOT_DIR=${SCRIPT_DIR}/../
-BUILD_DIR=${ROOT_DIR}/build
-ASTRA_SIM_DIR=${ROOT_DIR}/astra-sim
 
-ANALYTICAL_SCRIPT=${ASTRA_SIM_DIR}/build/astra_analytical/build.sh
-ANALYTICAL_AWARE_BIN=${ROOT_DIR}/build/AstraSim_Analytical_Congestion_Aware
-ANALYTICAL_UNAWARE_BIN=${ROOT_DIR}/build/AstraSim_Analytical_Congestion_Unaware
+source ${ROOT_DIR}/.env
+cd ${ROOT_DIR}
+
+ANALYTICAL_SCRIPT=${ASTRASIM_DIR}/build/astra_analytical/build.sh
 
 function compile {
     mkdir -p ${BUILD_DIR}
     bash ${ANALYTICAL_SCRIPT}
-    cp -f ${ASTRA_SIM_DIR}/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Aware ${ANALYTICAL_AWARE_BIN}
-    cp -f ${ASTRA_SIM_DIR}/build/astra_analytical/build/bin/AstraSim_Analytical_Congestion_Unaware ${ANALYTICAL_UNAWARE_BIN}
+    cp -f ${ASTRASIM_DIR}/build/astra_analytical/build/bin/${ANALYTICAL_AWARE_BIN_NAME} ${ANALYTICAL_AWARE_BIN}
+    cp -f ${ASTRASIM_DIR}/build/astra_analytical/build/bin/${ANALYTICAL_UNAWARE_BIN_NAME} ${ANALYTICAL_UNAWARE_BIN}
     echo -e "\033[32mcompile done\033[0m"
 }
 
@@ -37,17 +36,11 @@ function check_bin {
 
 function verify_analytical {
     RESULT_DIR=${ROOT_DIR}/log/verify_analytical
-
-    SYSTEM="${ROOT_DIR}/astra-sim/inputs/system/Switch.json"
-    WORKLOAD="${ROOT_DIR}/example/demo/workload/Resnet50_DataParallel"
-    NETWORK="${ROOT_DIR}/astra-sim/inputs/network/analytical/FullyConnected.yml"
-    MEMORY="${ROOT_DIR}/astra-sim/inputs/remote_memory/analytical/no_memory_expansion.json"
-
     mkdir -p ${RESULT_DIR}
     
     "${ANALYTICAL_AWARE_BIN}" \
         --run-name="verify_analytical_aware" \
-        --network-configuration="${NETWORK}" \
+        --network-configuration="${ANALYTICAL_NETWORK}" \
         --system-configuration="${SYSTEM}" \
         --workload-configuration="${WORKLOAD}" \
         --remote-memory-configuration="${MEMORY}" \
@@ -56,7 +49,7 @@ function verify_analytical {
 
     "${ANALYTICAL_UNAWARE_BIN}" \
         --run-name="verify_analytical_unaware" \
-        --network-configuration="${NETWORK}" \
+        --network-configuration="${ANALYTICAL_NETWORK}" \
         --system-configuration="${SYSTEM}" \
         --workload-configuration="${WORKLOAD}" \
         --remote-memory-configuration="${MEMORY}" \
@@ -84,3 +77,5 @@ case "$1" in
     echo "use -a|--all      to compile and run test case"
     echo "use -h|--help     to get help info";;
 esac
+
+cd -
