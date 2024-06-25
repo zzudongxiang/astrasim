@@ -1,5 +1,11 @@
 # ASTRA-sim 安装教程
 
+**源码细节正在调试，暂未开放，欢迎邮件沟通 [zzudongxiang@163.com](mailto:zzudongxiang@163.com)**
+
+**源码细节正在调试，暂未开放，欢迎邮件沟通 [zzudongxiang@163.com](mailto:zzudongxiang@163.com)**
+
+**源码细节正在调试，暂未开放，欢迎邮件沟通 [zzudongxiang@163.com](mailto:zzudongxiang@163.com)**
+
 ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研究现代深度学习系统所面临的挑战，探索瓶颈问题，并为未来不同平台上开发大型 DNN 模型提供高效的方法。
 
 ![astra_sim_overview](../images/astra_sim_overview.png)
@@ -18,7 +24,7 @@ ASTRA-sim 是一个分布式机器学习系统模拟器。它可以系统地研�
   apt update
   apt upgrade
   # 使用apt安装依赖
-  apt install -y gcc g++ make cmake mpich
+  apt install -y gcc g++ make cmake mpich gdb
   apt install -y nano git git-lfs python3 python3-pip
   apt install -y libboost-dev libboost-program-options-dev
   apt install -y libprotobuf-dev protobuf-compiler

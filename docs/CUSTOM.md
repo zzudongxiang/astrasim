@@ -1,5 +1,11 @@
 # 使用Docker创建环境
 
+**源码细节正在调试，暂未开放，欢迎邮件沟通 [zzudongxiang@163.com](mailto:zzudongxiang@163.com)**
+
+**源码细节正在调试，暂未开放，欢迎邮件沟通 [zzudongxiang@163.com](mailto:zzudongxiang@163.com)**
+
+**源码细节正在调试，暂未开放，欢迎邮件沟通 [zzudongxiang@163.com](mailto:zzudongxiang@163.com)**
+
 > 注意该流程仅供参考，仅作为开发者自用的脚本记录
 
 ## 1. 创建容器
